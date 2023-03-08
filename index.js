@@ -1,8 +1,23 @@
 const visit = require("unist-util-visit");
-const plantumlEncoder = require("plantuml-encoder");
+const { resolve } = require('path');
+const { execSync } = require('child_process');
 
-const DEFAULT_OPTIONS = {
-  baseUrl: "https://www.plantuml.com/plantuml/png"
+const plantuml = (uml) => {
+	const plantumlJar = resolve(__dirname, '../vendor/plantuml.jar');
+	const result = execSync(
+		[
+			'java',
+			'-jar',
+			'-Djava.awt.headless=true',
+			'--add-opens=java.xml/com.sun.org.apache.xalan.internal.xsltc.trax="ALL-UNNAMED"',
+			plantumlJar,
+			'-tsvg',
+			'-pipe',
+		].join(' '),
+		{ input: uml }
+	);
+
+	return result.toString();
 };
 
 /**
@@ -10,26 +25,19 @@ const DEFAULT_OPTIONS = {
  *
  * See details about plugin API:
  * https://github.com/unifiedjs/unified#plugin
- *
- * You can specify the endpoint of PlantUML with the option 'baseUrl'
- *
- * @param {Object} pluginOptions Remark plugin options.
  */
-function remarkSimplePlantumlPlugin(pluginOptions) {
-  const options = { ...DEFAULT_OPTIONS, ...pluginOptions };
+const remarkPlantumlPlugin = () => (syntaxTree) => {
+	visit(syntaxTree, 'text', (node) => {
+		const { value } = node;
+		const matched = value.match(/^```plantuml\n(.+)\n```$/gms);
+		if (matched) {
+			node.type = 'html';
+			node.value = plantuml(
+				value.replace(/^```plantuml\n/gms, '').replace(/\n```/gms, '')
+			);
+		}
+	});
+	return syntaxTree;
+};
 
-  return function transformer(syntaxTree) {
-    visit(syntaxTree, "code", node => {
-      let { lang, value, meta } = node;
-      if (!lang || !value || lang !== "plantuml") return;
-
-      node.type = "image";
-      node.url = `${options.baseUrl.replace(/\/$/, "")}/${plantumlEncoder.encode(value)}`;
-      node.alt = meta;
-      node.meta = undefined;
-    });
-    return syntaxTree;
-  };
-}
-
-module.exports = remarkSimplePlantumlPlugin;
+module.exports = { remarkPlantumlPlugin, plantuml };

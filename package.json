@@ -1,7 +1,7 @@
 {
-  "name": "@akebifiky/remark-simple-plantuml",
+  "name": "remark-sync-plantuml",
   "version": "1.0.2",
-  "description": "`remark-simple-plantuml` is a simple plugin for [remarkjs](https://github.com/remarkjs/remark) that converts PlantUML code written in Markdown to `img` tags.",
+  "description": "`remark-sync-plantuml` is a plugin for remarkjs that converts PlantUML code written in Markdown to SVG with plantuml.jar.",
   "main": "./index.js",
   "scripts": {
     "test": "mocha",
@@ -10,33 +10,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akebifiky/remark-simple-plantuml.git"
+    "url": "git+https://github.com/nishidemasami/remark-sync-plantuml.git"
   },
-  "author": "akebifiky",
+  "author": "nishidemasami",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akebifiky/remark-simple-plantuml/issues"
+    "url": "https://github.com/nishidemasami/remark-sync-plantuml/issues"
   },
-  "homepage": "https://github.com/akebifiky/remark-simple-plantuml#readme",
+  "homepage": "https://github.com/nishidemasami/remark-sync-plantuml#readme",
   "keywords": [
     "remark",
     "plantuml"
   ],
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "mocha": "^7.0.1",
-    "nyc": "^15.0.0",
-    "prettier": "^1.19.1",
-    "remark": "^11.0.2"
-  },
-  "dependencies": {
-    "plantuml-encoder": "^1.4.0",
-    "unist-util-visit": "^2.0.2"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.2"
   }
 }
