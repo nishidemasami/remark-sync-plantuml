@@ -8,10 +8,9 @@ import { plantuml } from 'sync-plantuml';
  * https://github.com/unifiedjs/unified#plugin
  */
 export const remarkPlantumlPlugin = () => (syntaxTree) => {
-	visit(syntaxTree, 'text', (node) => {
-		const { value } = node;
-		const matched = value.match(/^```plantuml\n(.+)\n```$/gms);
-		if (matched) {
+	visit(syntaxTree, 'code', (node) => {
+		const { value, lang } = node;
+		if (lang === 'plantuml') {
 			node.type = 'html';
 			node.value = plantuml(
 				value.replace(/^```plantuml\n/gms, '').replace(/\n```/gms, '')
