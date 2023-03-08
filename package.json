@@ -1,6 +1,6 @@
 {
   "name": "remark-sync-plantuml",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "`remark-sync-plantuml` is a plugin for remarkjs that converts PlantUML code written in Markdown to SVG with plantuml.jar.",
   "main": "./index.js",
   "type": "module",
