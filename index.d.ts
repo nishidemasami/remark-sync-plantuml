@@ -1,6 +1,8 @@
 import 'webrtc';
 import { Plugin } from 'unified';
 
-declare function plantuml(uml: string): string;
+declare var remarkPlantumlPlugin: Plugin;
 
-declare function remarkPlantumlPlugin(): Plugin;
+declare module 'remark-sync-plantuml' {
+  export = remarkPlantumlPlugin
+}

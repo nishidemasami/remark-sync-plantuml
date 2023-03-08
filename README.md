@@ -41,13 +41,29 @@ Alice -> Bob: hello
 ### JavaScript
 
 ```javascript
-const remark = require("remark");
-const remarkPlantUML = require("remark-sync-plantuml");
-const fs = require("fs");
-const path = require("path");
+import rehypeKatex from 'rehype-katex';
+import rehypeStringify from 'rehype-stringify';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import remarkPlantuml from 'remark-sync-plantuml';
+import { unified } from 'unified';
 
-const input = fs.readFileSync(path.resolve(__dirname, "./your-markdown.md")).toString();
-const output = remark().use(remarkPlantUML).processSync(input).toString();
+export const markdownToHtml = async (markdown: string) =>
+  (
+    await unified()
+      .use(remarkParse)
+      .use(remarkMath)
+      .use(remarkGfm)
+      .use(remarkPlantuml)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeKatex)
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown)
+  )
+    .toString();
+
 ```
 
 ## Integration
