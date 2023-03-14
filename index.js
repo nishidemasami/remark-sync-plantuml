@@ -1,5 +1,5 @@
-import { visit } from 'unist-util-visit';
-import { plantuml } from 'sync-plantuml';
+import { visit } from "unist-util-visit";
+import { plantuml } from "sync-plantuml";
 
 /**
  * Plugin for remark-js
@@ -8,13 +8,12 @@ import { plantuml } from 'sync-plantuml';
  * https://github.com/unifiedjs/unified#plugin
  */
 export const remarkPlantumlPlugin = () => (syntaxTree) => {
-	visit(syntaxTree, 'code', (node) => {
+	visit(syntaxTree, "code", (node) => {
 		const { value, lang } = node;
-		if (lang === 'plantuml') {
-			node.type = 'html';
-			node.value = plantuml(
-				value.replace(/^```plantuml\n/gms, '').replace(/\n```/gms, '')
-			);
+		if (lang === "plantuml") {
+			node.type = "html";
+			node.value =
+				'<div class="plantuml">' + plantuml(value.replace(/^```plantuml\n/gms, "").replace(/\n```/gms, "")) + "</div>";
 		}
 	});
 	return syntaxTree;
